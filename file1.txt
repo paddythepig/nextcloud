@@ -1,0 +1,27 @@
+<VirtualHost *:80>
+  ServerName cloud.domain.name
+  ErrorLog ${APACHE_LOG_DIR}/nextcloud-error.log
+  CustomLog ${APACHE_LOG_DIR}/nextcloud-access.log combined
+  ProxyPreserveHost On
+  ProxyPass / http://127.0.0.1:8080/
+  ProxyPassReverse / http://127.0.0.1:8080/
+  RewriteEngine On
+  RewriteRule ^/\.well-known/carddav http://%{SERVER_NAME}/remote.php/dav/ [R=301,L]
+  RewriteRule ^/\.well-known/caldav http://%{SERVER_NAME}/remote.php/dav/ [R=301,L]
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName cloud.domain.name
+  ErrorLog ${APACHE_LOG_DIR}/nextcloud-error.log
+  CustomLog ${APACHE_LOG_DIR}/nextcloud-access.log combined
+  SSLEngine On
+  ProxyPreserveHost On
+  ProxyPass    / http://127.0.0.1:8080/
+  ProxyPassReverse / http://127.0.0.1:8080/
+  # Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
+  RewriteEngine On
+  RewriteRule ^/\.well-known/carddav https://%{SERVER_NAME}/remote.php/dav/ [R=301,L]
+  RewriteRule ^/\.well-known/caldav https://%{SERVER_NAME}/remote.php/dav/ [R=301,L]
+  SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+</VirtualHost>

@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+  RedirectMatch permanent ^/(.*)$ https://www.bing.com
+  ErrorLog ${APACHE_LOG_DIR}/catchall-error.log
+  CustomLog ${APACHE_LOG_DIR}/catchall-access.log combined
+</VirtualHost>
+
+<VirtualHost _default_:443>
+  RedirectMatch permanent ^/(.*)$ https://www.bing.com
+  ErrorLog ${APACHE_LOG_DIR}/catchall-error.log
+  CustomLog ${APACHE_LOG_DIR}/catchall-access.log combined
+  SSLEngine on
+  SSLCertificateFile   /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+</VirtualHost>
